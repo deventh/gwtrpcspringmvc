@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns="http://www.springframework.org/schema/security"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:context="http://www.springframework.org/schema/context"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/security
+		http://www.springframework.org/schema/security/spring-security-3.1.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+    <context:component-scan base-package="org.gspring" />
+
+    <http use-expressions="true" authentication-manager-ref="authenticationManager" name="securityMapping">
+        <custom-filter ref="sessionExpiredFilter" before="FIRST"/>
+
+        <intercept-url pattern="/secured.htm" access="hasRole('ROLE_USER')" />
+        <intercept-url pattern="/**/*.gwt" access="hasRole('ROLE_USER')" />
+        <intercept-url pattern="/**" access="permitAll" />
+
+        <logout invalidate-session="true" logout-success-url="/" logout-url="/logout.htm"/>
+
+        <http-basic/>
+
+        <form-login default-target-url="/secured.htm" login-page="/login.htm"
+                             login-processing-url="/login_action.htm"
+                             authentication-failure-url="/failed_login.htm"/>
+    </http>
+
+    <authentication-manager id="authenticationManager">
+        <authentication-provider user-service-ref="userDetailsService">
+        </authentication-provider>
+    </authentication-manager>
+</beans:beans>
