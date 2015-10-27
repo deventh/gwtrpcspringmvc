@@ -28,12 +28,6 @@
         </layout>
     </appender>
 
-    <logger name="com.marrom">
-        <level value="DEBUG"/>
-        <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="DAILYFILE-marrom"/>
-    </logger>
-
     <logger name="org.springframework">
         <level value="DEBUG"/>
         <appender-ref ref="CONSOLE"/>

@@ -7,7 +7,7 @@
 	<version>0.1-SNAPSHOT</version>
 
 	<properties>
-		<gwt.version>2.4.0</gwt.version>
+		<gwt.version>2.7.0</gwt.version>
 		<maven.compiler.source>1.6</maven.compiler.source>
 		<maven.compiler.target>1.6</maven.compiler.target>
 		<org.springframework.version>3.1.0.RELEASE</org.springframework.version>
@@ -15,12 +15,6 @@
 	</properties>
 
 	<dependencies>
-        <dependency>
-            <groupId>cglib</groupId>
-            <artifactId>cglib</artifactId>
-            <version>2.2.2</version>
-        </dependency>
-
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-servlet</artifactId>
@@ -46,7 +40,7 @@
 			<scope>provided</scope>
 		</dependency>
 
-        <dependency>
+		<dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
             <version>${springframework.version}</version>
@@ -72,8 +66,8 @@
 			<artifactId>standard</artifactId>
 			<version>1.1.2</version>
 		</dependency>
-		
-		<!-- gSpring dependency -->
+
+		<!-- gwtrpcspringmvc dependency -->
 		<dependency>
 			<groupId>org.gspring</groupId>
 			<artifactId>gspring</artifactId>
@@ -87,11 +81,16 @@
 		<finalName>${artifactId}</finalName>
 		<outputDirectory>target/${artifactId}/WEB-INF/classes</outputDirectory>
 		<plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>2.1.1</version>
-            </plugin>
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<path>/session-expired</path>
+					<warSourceDirectory>target/session-expired</warSourceDirectory>
+					<staticContextPath>/session-expired</staticContextPath>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
@@ -102,15 +101,13 @@
 						<goals>
 							<goal>generateAsync</goal>
 							<goal>compile</goal>
+							<goal>test</goal>
 						</goals>
 					</execution>
 				</executions>
-                <configuration>
-                    <hostedWebapp>target/${artifactId}</hostedWebapp>
-                    <modules>
-                        <module>org.gspring.mvc.sample.application.Application</module>
-                    </modules>
-                </configuration>
+				<configuration>
+					<webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -118,14 +115,6 @@
 				<configuration>
 					<source>${maven.compiler.source}</source>
 					<target>${maven.compiler.target}</target>
-				</configuration>
-			</plugin>
-			<plugin>
-		        <groupId>org.mortbay.jetty</groupId>
-		        <artifactId>maven-jetty-plugin</artifactId>
-				<configuration>
-					<contextPath >/rpc-security-sample</contextPath >
-					<webAppSourceDirectory>target/session-expired</webAppSourceDirectory>
 				</configuration>
 			</plugin>
 		</plugins>
