@@ -1,0 +1,27 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+			http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.1.xsd
+			">
+
+	<context:annotation-config />
+
+	<context:component-scan base-package="org.gspring" />
+
+	<import resource="classpath:/gspring-context.xml" />
+
+	<jdbc:embedded-database id="dataSource" type="H2">
+		<jdbc:script location="classpath:create.sql" />
+	</jdbc:embedded-database>
+
+	<bean class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+
+	<!-- Optional -->
+	<bean id="cacheManager" class="org.springframework.cache.concurrent.ConcurrentMapCacheManager" />
+</beans>

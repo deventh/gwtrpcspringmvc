@@ -1,0 +1,8 @@
+CREATE TABLE users (
+  id  INTEGER PRIMARY KEY auto_increment,
+  email VARCHAR(30),
+  name  VARCHAR(128)
+);
+
+ALTER TABLE users ADD CONSTRAINT EMAIL_UNIQUE UNIQUE(email);
+
